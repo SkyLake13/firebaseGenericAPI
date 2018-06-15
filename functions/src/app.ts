@@ -2,6 +2,9 @@ import * as express from 'express';
 import * as cors from 'cors';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+import * as cheerio from 'cheerio';
+import * as request from 'request';
+
 import * as auth from './auth';
 
 const firebase = functions.config().firebase;
@@ -19,6 +22,34 @@ app.use(cors({ origin: true }));
 // check if app is listening
 app.get('/', (req, res) => {
     res.send('firebase function with express is listening.') 
+});
+
+app.get('/scrap/:url', (req, res) => {
+    let url = 'https://' + req.params.url;
+    let jsons = [];
+    let json = { city : "", price : "", change : ""};
+
+    request(url, (error, response, html) => {
+        console.log("error", error);
+        if(!error) {    
+                let $ = cheerio.load(html);
+                $('#mainDiv').each((index, element) => {
+                    json =  { city : "", price : "", change : ""};
+                    let ele = $(element);
+                    let name = ele.children('.W70').children().first().text();
+                    let price = ele.children('.W60').children('b').text();
+                    let change = ele.children('.W60').children('span').text();
+                    json.city = name;
+                    json.price = price;
+                    json.change = change;
+                    jsons.push(json);
+                });
+            }
+            res.send(jsons);
+        });
+
+    
+    
 });
 
 // add document
@@ -82,7 +113,6 @@ app.get('/:type', (req, res) => {
         res.send(xyz);
     }).catch(err => res.status(500).send(err));
 });
-
 
 
 

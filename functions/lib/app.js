@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
 const functions = require("firebase-functions");
+const cheerio = require("cheerio");
+const request = require("request");
 const firebase = functions.config().firebase;
 admin.initializeApp(firebase);
 const db = admin.firestore();
@@ -14,6 +16,29 @@ exports.app.use(cors({ origin: true }));
 // check if app is listening
 exports.app.get('/', (req, res) => {
     res.send('firebase function with express is listening.');
+});
+exports.app.get('/scrap/:url', (req, res) => {
+    let url = 'https://' + req.params.url;
+    let jsons = [];
+    let json = { city: "", price: "", change: "" };
+    request(url, (error, response, html) => {
+        console.log("error", error);
+        if (!error) {
+            let $ = cheerio.load(html);
+            $('#mainDiv').each((index, element) => {
+                json = { city: "", price: "", change: "" };
+                let ele = $(element);
+                let name = ele.children('.W70').children().first().text();
+                let price = ele.children('.W60').children('b').text();
+                let change = ele.children('.W60').children('span').text();
+                json.city = name;
+                json.price = price;
+                json.change = change;
+                jsons.push(json);
+            });
+        }
+        res.send(jsons);
+    });
 });
 // add document
 exports.app.post('/:type', (req, res) => {
