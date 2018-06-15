@@ -9,6 +9,9 @@
   },
   "compileOnSave": true,
   "include": [
+    "src_"
+  ],
+  "exclude": [
     "src"
   ]
 }

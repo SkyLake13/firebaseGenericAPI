@@ -5,8 +5,6 @@ import * as functions from 'firebase-functions';
 import * as cheerio from 'cheerio';
 import * as request from 'request';
 
-import * as auth from './auth';
-
 const firebase = functions.config().firebase;
 admin.initializeApp(firebase);
 

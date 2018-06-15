@@ -1,4 +1,6 @@
-export function auth(req, res, next) {
+export function authorization(req, res, next) {
+    console.log('auth reached');
+    console.log('header', req.headers);
     if(!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
         res.status(403).send('Unauthorized');
         return;
@@ -6,8 +8,9 @@ export function auth(req, res, next) {
 
     const token = req.headers.authorization.split('Bearer ')[1];
 
-    if(token) {
+    if(token && token === 'abhishek') {
         return next();
     }
+    res.status(403).send('Unauthorized');
     return;
-} 
+}
