@@ -1,0 +1,10 @@
+<ActionBar class="action-bar">
+    <NavigationButton [nsRouterLink]="['../../home']" android.systemIcon="ic_menu_back"></NavigationButton>
+    <Label class="action-bar-title" [text]="item.city"></Label>
+</ActionBar>
+
+<GridLayout>
+    <Label class="m-10 h3" verticalAlignment="top" [text]="item.price"></Label>
+    <Label class="m-10 h3" verticalAlignment="top" [text]="item.change"></Label>
+    <Label class="m-10 h3" verticalAlignment="top" [text]="item.date"></Label>
+</GridLayout>

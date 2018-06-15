@@ -1,0 +1,18 @@
+<ActionBar class="action-bar">
+    <Label class="action-bar-title" text="Home"></Label>
+</ActionBar>
+
+<StackLayout sdkExampleTitle sdkToggleNavButton>
+    <StackLayout>
+        <SearchBar hint="Search city" 
+            (textChange)="onTextChanged($event)"></SearchBar>
+    </StackLayout>
+</StackLayout>
+
+<GridLayout class="page page-content">
+    <ListView [items]="filteredCities | search : searchText" class="list-group">
+        <ng-template let-item="city">
+            <Label [nsRouterLink]="['../item', city]" [text]="city" class="list-group-item"></Label>
+        </ng-template>
+    </ListView>
+</GridLayout>
