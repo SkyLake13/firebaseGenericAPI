@@ -14,7 +14,7 @@ class App {
     }
 
     private config(): void{
-        this.app.use(authorization);
+        //this.app.use(authorization);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         // serving static files 
