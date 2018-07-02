@@ -32,7 +32,7 @@ class FuelController extends BaseController {
                         let name = ele.children('.W70').children().first().text();
                         let price = ele.children('.W60').children('b').text();
                         let change = ele.children('.W60').children('span').text();
-                        let date = ele.children('.W40').children('div').text(); 
+                        let date = ele.children('.W40').children('div').text().replace('\\n', '').trim();
                         json.city = name;
                         json.price = price;
                         json.change = change;
@@ -82,7 +82,7 @@ class FuelController extends BaseController {
                         if(cityName.toLowerCase() === name.toLowerCase()) {
                             let price = ele.children('.W60').children('b').text();
                             let change = ele.children('.W60').children('span').text();
-                            let date = ele.children('.W40').children('div').text(); 
+                            let date = ele.children('.W40').children('div').text().replace('\\n', '').trim();
                             json.city = name;
                             json.price = price;
                             json.change = change;
