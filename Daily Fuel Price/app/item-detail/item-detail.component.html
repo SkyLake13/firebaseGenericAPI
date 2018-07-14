@@ -3,8 +3,8 @@
     <Label class="action-bar-title" [text]="item.city"></Label>
 </ActionBar>
 
-<GridLayout>
-    <Label class="m-10 h3" verticalAlignment="top" [text]="item.price"></Label>
-    <Label class="m-10 h3" verticalAlignment="top" [text]="item.change"></Label>
-    <Label class="m-10 h3" verticalAlignment="top" [text]="item.date"></Label>
+<GridLayout columns="*, 2*, *" rows="*, *, *, *, *" width="210" height="210" backgroundColor="lightgray" >
+    <Label [text]="item.price" row="1" col="1" colspan="2" ></Label>
+    <Label [text]="item.change" row="2" col="1" colspan="2"></Label>
+    <Label [text]="item.date" row="3" col="1" colspan="2"></Label>
 </GridLayout>

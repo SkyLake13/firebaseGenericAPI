@@ -1,13 +1,13 @@
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
-import { DataService } from "./data.service";
 import { FuelService, Interceptor } from "~/core/fuel.service";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { DataService } from "./data.service";
 
 @NgModule({
     imports: [HttpClientModule],
     providers: [
         DataService, FuelService,
-        { provide: HTTP_INTERCEPTORS, useClass: Interceptor }
+        { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
     ]
 })
 export class CoreModule { }

@@ -25,28 +25,37 @@ export class HomeComponent implements OnInit {
     constructor(private fuelService: FuelService, private router: RouterExtensions) { }
 
     ngOnInit(): void {
-        this.fuelService.getCities().then((cities: Array<string>) => { 
+        this.fuelService.getCities().then((cities: Array<string>) => {
             this.cities = cities;
-        }).then(err => alert(err));
+        }).then((err) => {
+            if (err) {
+                alert("err" + err);
+            }
+        });
     }
 
-    public onTextChanged(args) {
-        let searchBar = args.object;
+    onTextChanged(args) {
+        const searchBar = args.object;
         this.searchText = searchBar.text;
-        console.log("SearchBar text changed! New value: " + searchBar.text);
+    }
 
+    onItemTap(event) {
+        console.log(event);
     }
 }
 
-import { Pipe, PipeTransform } from '@angular/core';
+// tslint:disable-next-line:no-duplicate-imports
+import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({name: 'search'})
+// tslint:disable-next-line:max-classes-per-file
+@Pipe({name: "search"})
 export class SearchPipe implements PipeTransform {
   transform(items: Array<string>, search: string): Array<string> {
-    if(!items) return [];
-    if(!search) return items;
+    if (!items) { return []; }
+    if (!search) { return items; }
     search = search.toLowerCase();
-    return items.filter( it => {
+
+    return items.filter((it) => {
         return it.toLowerCase().includes(search);
     });
   }

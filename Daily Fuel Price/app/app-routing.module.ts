@@ -16,7 +16,7 @@ const routes: Routes = [
     { path: "browse", component: BrowseComponent, outlet: "browseTab" },
     { path: "search", component: SearchComponent, outlet: "searchTab" },
 
-    { path: "item/:city", component: ItemDetailComponent, outlet: "homeTab" }
+    { path: "home/:city", component: ItemDetailComponent, outlet: "homeTab" }
 ];
 
 @NgModule({

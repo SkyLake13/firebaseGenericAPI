@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { DataService, IDataItem } from "../core/data.service";
 import { FuelService } from "~/core/fuel.service";
+import { DataService, IDataItem } from "../core/data.service";
 
 @Component({
     selector: "ItemDetail",
@@ -9,14 +9,20 @@ import { FuelService } from "~/core/fuel.service";
     templateUrl: "./item-detail.component.html"
 })
 export class ItemDetailComponent implements OnInit {
-    item: any;
+    item = {
+        city: "", change: "", date: "", price: ""
+    };
 
     constructor(private fuelService: FuelService, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
-        const city: string = this.route.snapshot.params.city;
-        this.fuelService.getPriceByCity(city).then(data => {
-            this.item = data[0];
+        this.route.params.subscribe((params) => {
+            if (params) {
+                const city: string = params.city;
+                this.fuelService.getPriceByCity(city).then((data) => {
+                    this.item = data[0];
+                });
+            }
         });
     }
 }
