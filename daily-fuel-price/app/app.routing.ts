@@ -2,17 +2,18 @@ import { NgModule } from "@angular/core";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { Routes } from "@angular/router";
 
-import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
+import { HomeComponent } from "~/components/home/home.component";
+import { SearchFIlterPipe } from "~/pipes/search-filter.pipe";
+import { CityFuelDetailComponent } from "~/components/details/city-fuel-detail.component";
 
 const routes: Routes = [
-    { path: "", redirectTo: "/items", pathMatch: "full" },
-    { path: "items", component: ItemsComponent },
-    { path: "item/:id", component: ItemDetailComponent },
+    { path: "", redirectTo: "/cities", pathMatch: "full" },
+    { path: "cities", component: HomeComponent },
+    { path: "cities/:city", component: CityFuelDetailComponent },
 ];
 
-@NgModule({
-    imports: [NativeScriptRouterModule.forRoot(routes)],
-    exports: [NativeScriptRouterModule]
-})
-export class AppRoutingModule { }
+export const AppRouting = NativeScriptRouterModule.forRoot(routes);
+
+export const COMPONENTS = [
+    HomeComponent, CityFuelDetailComponent, SearchFIlterPipe
+]

@@ -1,0 +1,11 @@
+<ActionBar title="{{city ? city.city : ''}}">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+</ActionBar>
+
+<FlexboxLayout *ngIf="city" flexDirection="column" class="page">
+    <FlexboxLayout class="m-15">
+        <Label class="h2" [text]="city.price"></Label>
+        <Label class="h2" [text]="city.change"></Label>
+    </FlexboxLayout>
+    <Label class="h4" [text]="city.date"></Label>
+</FlexboxLayout>
