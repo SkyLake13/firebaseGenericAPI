@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
-import { FuelService } from "~/core";
+import { FuelService, BusyIndicatorService } from "~/core";
 
 
 @Component({
@@ -24,15 +24,14 @@ export class HomeComponent implements OnInit {
     filteredCities: Array<string>;
     searchText: string;
 
-    constructor(private fuelService: FuelService, private router: RouterExtensions) { }
+    constructor(private fuelService: FuelService, 
+        private router: RouterExtensions, private busyIndicatorService: BusyIndicatorService) { }
 
     ngOnInit(): void {
+        this.busyIndicatorService.loading();
         this.fuelService.getCities().then((cities: Array<string>) => {
             this.cities = cities;
-        }).then((err) => {
-            if (err) {
-                alert("err" + err);
-            }
+            this.busyIndicatorService.loaded();
         });
     }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { FuelService } from "~/core";
-import { City } from "~/core/city";
+import { FuelService, BusyIndicatorService } from "~/core";
+import { City } from "~/core";
 
 @Component({
     selector: "city-fuel-details",
@@ -13,13 +13,16 @@ export class CityFuelDetailComponent implements OnInit {
     
     constructor(
         private fuelService: FuelService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private busyIndicatorService: BusyIndicatorService
     ) { }
 
     ngOnInit(): void {
+        this.busyIndicatorService.loading();
         const city = this.route.snapshot.params["city"];
         this.fuelService.getPriceByCity(city).then((city: City[]) => {
             this.city = city[0];
+            this.busyIndicatorService.loaded();
         });
     }
 }
