@@ -1,0 +1,13 @@
+<ListView class="threads-list" [items]="items">
+    <ng-template let-item="item">
+        <GridLayout rows="auto" columns="auto,*" class="threads-list-wrapper">
+            <!-- <Image row="0" col="0" [src]="item.photo"></Image> -->
+            <StackLayout row="0" col="1" class="" orientation="vertical">
+                <Label class="t-large" [text]="item.city"></Label>
+                <Label [text]="item.price"></Label>
+                <Label [text]="item.date"></Label>
+                <Label [text]="item.change"></Label>
+            </StackLayout>
+        </GridLayout>
+    </ng-template>
+</ListView>

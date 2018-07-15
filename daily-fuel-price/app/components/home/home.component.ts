@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { FuelService, BusyIndicatorService } from "~/core";
+import { BaseComponent } from "~/components/base.component";
 
 
 @Component({
@@ -9,7 +10,7 @@ import { FuelService, BusyIndicatorService } from "~/core";
     templateUrl: "./home.component.html",
     providers: [FuelService]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends BaseComponent implements OnInit {
     _cities: Array<string>;
 
     get cities(): Array<string> {
@@ -25,10 +26,11 @@ export class HomeComponent implements OnInit {
     searchText: string;
 
     constructor(private fuelService: FuelService, 
-        private router: RouterExtensions, private busyIndicatorService: BusyIndicatorService) { }
+        private router: RouterExtensions, busyIndicatorService: BusyIndicatorService) { 
+            super(busyIndicatorService)
+        }
 
     ngOnInit(): void {
-        this.busyIndicatorService.loading();
         this.fuelService.getCities().then((cities: Array<string>) => {
             this.cities = cities;
             this.busyIndicatorService.loaded();
