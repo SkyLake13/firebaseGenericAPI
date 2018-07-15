@@ -13,7 +13,7 @@ class FuelController extends BaseController {
     private setUp() {
         this.router.get('/', this.get);
         this.router.get('/cities', this.getCities);
-        this.router.get('/:name', this.getByCityName);
+        this.router.get('/:names', this.getByCityNames);
     }
 
     private get(req: Request, res: Response) {
@@ -63,9 +63,10 @@ class FuelController extends BaseController {
         });
     }
 
-    private getByCityName(req: Request, res: Response) {
+    private getByCityNames(req: Request, res: Response) {
         let url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
-        let cityName = req.params.name;
+        let _cityNames = req.params.names.toLowerCase();
+        let cityNames: Array<string> = _cityNames.split(',');
         
         let jsons = [];
         let json = { city : "", price : "", change : "", date: ""};
@@ -79,7 +80,7 @@ class FuelController extends BaseController {
                         let ele = $(element);
                         let name = ele.children('.W70').children().first().text();
 
-                        if(cityName.toLowerCase() === name.toLowerCase()) {
+                        if(cityNames.find(c => c === name.toLowerCase())) {
                             let price = ele.children('.W60').children('b').text();
                             let change = ele.children('.W60').children('span').text();
                             let date = ele.children('.W40').children('div').text().replace('\\n', '').trim();

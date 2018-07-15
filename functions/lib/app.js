@@ -5,14 +5,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const FuelController = require("./controllers/fuel.controller");
 const StoreController = require("./controllers/store.controller");
-const auth_1 = require("./auth");
 class App {
     constructor() {
         this.app = express();
         this.config();
     }
     config() {
-        this.app.use(auth_1.authorization);
+        //this.app.use(authorization);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         // serving static files 
