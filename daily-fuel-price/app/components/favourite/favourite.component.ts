@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { City, BusyIndicatorService, AppSettings } from "~/core";
 import { FavouriteService } from "~/components/favourite/favourite.service";
 import { BaseComponent } from "~/components/base.component";
+import { Router, NavigationEnd } from "@angular/router";
 
 @Component({
     selector: 'fav-fuel',
@@ -14,12 +15,22 @@ export class FavouriteComponent extends BaseComponent implements OnInit  {
     items: Array<City> = [];
 
     constructor(private favService: FavouriteService, busyIndicatorService: BusyIndicatorService,
-    private settings: AppSettings) {
+    private settings: AppSettings, private router: Router) {
         super(busyIndicatorService);
      }
 
     ngOnInit(): void {
-        console.log('favourite component');
+        this.router.events.subscribe(event => { 
+            if(event instanceof NavigationEnd) {
+                this.busyIndicatorService.loading();
+                this.init();
+            }
+        });
+
+        this.init();
+    }
+
+    init() {
         this.favService.getFavourites().then(res => {
             this.items = res;
             this.busyIndicatorService.loaded();

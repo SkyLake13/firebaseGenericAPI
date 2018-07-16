@@ -5,3 +5,5 @@ export * from './busy-indicator.service';
 export * from './error.handler';
 export * from './error-handler.service';
 export * from './app.settings';
+export * from './toast-duration.enum';
+export * from './toast-message.service';
