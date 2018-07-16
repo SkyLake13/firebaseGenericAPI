@@ -6,12 +6,12 @@ import { FavouriteService } from "~/components/favourite/favourite.service";
 
 
 @Component({
-    selector: "home",
+    selector: "cities",
     moduleId: module.id,
-    templateUrl: "./home.component.html",
+    templateUrl: "./cities.component.html",
     providers: [FuelService, FavouriteService]
 })
-export class HomeComponent extends BaseComponent implements OnInit {
+export class CitiesComponent extends BaseComponent implements OnInit {
     private _cities: Array<string> 
 
     get cities(): Array<string> {
