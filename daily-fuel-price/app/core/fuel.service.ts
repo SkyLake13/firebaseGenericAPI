@@ -16,7 +16,7 @@ export class FuelService {
     }
 
     getPriceByCity(cityName: string): Promise<Array<City>> {
-        const url = this.url + cityName;
+        const url = encodeURI(this.url + cityName);
 
         return this.http.get<Array<City>>(url).toPromise<Array<City>>();
     }

@@ -8,9 +8,10 @@ import { CityFuelDetailComponent } from "~/components/details/city-fuel-detail.c
 import { FavouriteComponent } from "~/components/favourite/favourite.component";
 
 const routes: Routes = [
-    { path: "", redirectTo: "/cities", pathMatch: "full" },
-    { path: "cities", component: FavouriteComponent },
-    { path: "cities/:city", component: CityFuelDetailComponent },
+    { path: "", redirectTo: "/favs", pathMatch: "full" },
+    { path: "favs", component: FavouriteComponent },
+    { path: "cities", component: HomeComponent },
+    // { path: "cities/:city", component: CityFuelDetailComponent },
 ];
 
 export const AppRouting = NativeScriptRouterModule.forRoot(routes);

@@ -1,40 +1,47 @@
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
-import { FuelService, BusyIndicatorService } from "~/core";
+import { FuelService, BusyIndicatorService, AppSettings } from "~/core";
 import { BaseComponent } from "~/components/base.component";
+import { FavouriteService } from "~/components/favourite/favourite.service";
 
 
 @Component({
     selector: "home",
     moduleId: module.id,
     templateUrl: "./home.component.html",
-    providers: [FuelService]
+    providers: [FuelService, FavouriteService]
 })
 export class HomeComponent extends BaseComponent implements OnInit {
-    _cities: Array<string>;
+    private _cities: Array<string> 
 
     get cities(): Array<string> {
+        this._cities = this.settings.getCities();
         return this._cities;
     }
 
     set cities(value: Array<string>) {
+        this.settings.setCities(value);
         this._cities = value;
-        this.filteredCities = value;
     }
 
-    filteredCities: Array<string>;
     searchText: string;
 
     constructor(private fuelService: FuelService, 
-        private router: RouterExtensions, busyIndicatorService: BusyIndicatorService) { 
-            super(busyIndicatorService)
+        busyIndicatorService: BusyIndicatorService,
+        private settings: AppSettings, private favService: FavouriteService) { 
+            super(busyIndicatorService);
         }
 
     ngOnInit(): void {
-        this.fuelService.getCities().then((cities: Array<string>) => {
-            this.cities = cities;
+        if(this.cities === undefined || this.cities.length === 0) {
+            this.fuelService.getCities().then((cities: Array<string>) => {
+                this.cities = cities;
+                this.busyIndicatorService.loaded();
+            });
+        }
+        else {
             this.busyIndicatorService.loaded();
-        });
+        }
     }
 
     onTextChanged(args) {
@@ -42,8 +49,9 @@ export class HomeComponent extends BaseComponent implements OnInit {
         this.searchText = searchBar.text;
     }
 
-    onItemTap(event) {
-        console.log(event);
+    addAsfavourite(city: string) {
+        console.log(city);
+        this.favService.setFavourite(city);
     }
 }
 

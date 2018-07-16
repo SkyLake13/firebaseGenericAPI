@@ -4,7 +4,7 @@ import { AppRouting, COMPONENTS } from "./app.routing";
 import { AppComponent } from "./app.component";
 
 import { NativeScriptRouterModule } from "nativescript-angular/router";
-import { CoreModule, BusyIndicatorService, AppErrorHandler, ErrorHandlerService } from "~/core";
+import { CoreModule, BusyIndicatorService, AppErrorHandler, ErrorHandlerService, AppSettings } from "~/core";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -25,7 +25,7 @@ import { CoreModule, BusyIndicatorService, AppErrorHandler, ErrorHandlerService 
     ],
     providers: [
         BusyIndicatorService,
-        { provide: ErrorHandler, useClass: AppErrorHandler }, ErrorHandlerService
+        { provide: ErrorHandler, useClass: AppErrorHandler }, ErrorHandlerService, AppSettings
     ],
     schemas: [
         NO_ERRORS_SCHEMA
