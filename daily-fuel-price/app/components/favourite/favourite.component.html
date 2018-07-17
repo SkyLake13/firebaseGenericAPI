@@ -1,21 +1,25 @@
-<ActionBar title="Favourites">
+<ActionBar title="Favourites" class="action-bar">
     <ActionItem android.systemIcon="ic_menu_add" 
         android.position="actionBar" [nsRouterLink]="['../cities']"></ActionItem>
 </ActionBar>
 
-<ListView class="threads-list" [items]="items">
+<ListView class="list-group" [items]="items">
     <ng-template let-item="item">
-        <GridLayout columns="*,auto" rows="auto,auto" class="threads-list-wrapper">
-            <!-- <Image row="0" col="0" [src]="item.photo"></Image> -->
-            <StackLayout col="0" class="" orientation="vertical">
-                <Label class="t-large" [text]="item.city"></Label>
-                <Label [text]="item.price"></Label>
-                <Label [text]="item.date"></Label>
-                <Label [text]="item.change"></Label>
+        <GridLayout class="list-group-item" rows="*" columns="70, *, 100">
+            <StackLayout row="0" col="0">
+                <Image src="res://icon" class="img-circle"></Image>
             </StackLayout>
-            <StackLayout col="1">
-                <Button style="margin-left: 5; margin-right: 5;"
-                    text="Remove" class="action-item" (tap)="removeFavourite(item.city)"></Button>
+            <StackLayout row="0" col="1" class="m-l-10">
+                <Label [text]="item.city" class="font-weight-bold"></Label>
+                <StackLayout orientation="horizontal">
+                    <Label [text]="item.price" class="list-group-item-text m-r-10" ></Label>
+                    <Label [text]="item.change" class="list-group-item-text" ></Label>
+                </StackLayout>
+                <Label [text]="item.date" class="list-group-item-text"></Label>
+            </StackLayout>
+            <StackLayout row="0" col="2" style="padding-top: 30px">
+                <Button class="btn btn-outline" text="Remove"
+                    (tap)="removeFavourite(item.city)"></Button>
             </StackLayout>
         </GridLayout>
     </ng-template>

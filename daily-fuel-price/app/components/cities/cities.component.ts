@@ -3,6 +3,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { FuelService, BusyIndicatorService, AppSettings, ToastMessageService } from "~/core";
 import { BaseComponent } from "~/components/base.component";
 import { FavouriteService } from "~/components/favourite/favourite.service";
+import { HelperService } from "~/core/helper.service";
 
 
 @Component({
@@ -29,7 +30,9 @@ export class CitiesComponent extends BaseComponent implements OnInit {
     constructor(private fuelService: FuelService, 
         busyIndicatorService: BusyIndicatorService,
         private settings: AppSettings, private favService: FavouriteService,
-        private toastService: ToastMessageService) { 
+        private toastService: ToastMessageService,
+        private router: RouterExtensions,
+        private helperService: HelperService) { 
             super(busyIndicatorService);
         }
 
@@ -53,7 +56,11 @@ export class CitiesComponent extends BaseComponent implements OnInit {
     addAsfavourite(city: string) {
         this.favService.setFavourite(city);
         this._cities = this.settings.getCities();
-
+        this.helperService.refreshFavouriteComponent();
         this.toastService.showMessage(city + ' is added to favourites.');
+    }
+
+    goBack() {
+        this.router.backToPreviousPage();
     }
 }

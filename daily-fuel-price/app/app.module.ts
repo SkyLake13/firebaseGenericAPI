@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { CoreModule, BusyIndicatorService, AppErrorHandler, ErrorHandlerService, AppSettings, ToastMessageService } from "~/core";
+import { HelperService } from "~/core/helper.service";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -26,7 +27,8 @@ import { CoreModule, BusyIndicatorService, AppErrorHandler, ErrorHandlerService,
     providers: [
         BusyIndicatorService,
         { provide: ErrorHandler, useClass: AppErrorHandler }, 
-        ErrorHandlerService, AppSettings, ToastMessageService
+        ErrorHandlerService, AppSettings, ToastMessageService,
+        HelperService
     ],
     schemas: [
         NO_ERRORS_SCHEMA
