@@ -1,18 +1,18 @@
 <ActionBar title="Cities" class="action-bar">
-  <NavigationButton text="Back" android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+  <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
 </ActionBar>
 
 <StackLayout>
         <StackLayout>
-                <SearchBar hint="Search city" (textChange)="onTextChanged($event)"></SearchBar>
+                <SearchBar class="action-bar" hint="Search city" (textChange)="onTextChanged($event)"></SearchBar>
+                <dex-text-box></dex-text-box>
         </StackLayout>
         <StackLayout>
             <ListView [items]="cities | search : searchText" class="list-group">
                 <ng-template let-city="item" let-i="index" let-odd="odd" let-even="even">
-                    <GridLayout class="list-group-item" [nsRouterLink]="[city]" columns="*,100" rows="*">
+                    <GridLayout class="list-group-item" [nsRouterLink]="[city]" columns="*,80" rows="*">
                         <Label row="0" col="0" [text]="city" class="list-group-item-text font-weight-bold"></Label>
-                        <Button row="0" col="1" class="btn btn-outline"
-                         text="Add" (tap)="addAsfavourite(city)"></Button>
+                        <Button row="0" col="1" class="btn icon" [text]="getIcon('0xe145')" (tap)="addAsfavourite(city)"></Button>
                     </GridLayout>
                 </ng-template>
             </ListView>

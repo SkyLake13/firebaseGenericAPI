@@ -11,7 +11,18 @@ refer to http://docs.nativescript.org/ui/theme.
 */
 @import '~nativescript-theme-core/css/core.light.css';
 
+.icon {
+    font-family: icomoon;
+}
+
 .action-bar {
     background-color: #30bcff;
     color: white;
 }
+
+.btn {
+   /* border-color: transparent; */
+    z-index: 0;
+    font-size: 30px;
+}
+

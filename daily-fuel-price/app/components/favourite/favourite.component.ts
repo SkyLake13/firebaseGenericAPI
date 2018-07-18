@@ -40,6 +40,7 @@ export class FavouriteComponent extends BaseComponent implements OnInit  {
         this.favService.getFavourites().then(res => {
             this.items = res;
             this.busyIndicatorService.loaded();
+            this.shouldRefresh = false;
         });
     }
 

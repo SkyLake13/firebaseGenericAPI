@@ -1,11 +1,11 @@
 <ActionBar title="Favourites" class="action-bar">
     <ActionItem android.systemIcon="ic_menu_add" 
-        android.position="actionBar" [nsRouterLink]="['../cities']"></ActionItem>
+         [nsRouterLink]="['../cities']"></ActionItem>
 </ActionBar>
 
 <ListView class="list-group" [items]="items">
     <ng-template let-item="item">
-        <GridLayout class="list-group-item" rows="*" columns="70, *, 100">
+        <GridLayout class="list-group-item" rows="*" columns="70, *, 80">
             <StackLayout row="0" col="0">
                 <Image src="res://icon" class="img-circle"></Image>
             </StackLayout>
@@ -17,9 +17,8 @@
                 </StackLayout>
                 <Label [text]="item.date" class="list-group-item-text"></Label>
             </StackLayout>
-            <StackLayout row="0" col="2" style="padding-top: 30px">
-                <Button class="btn btn-outline" text="Remove"
-                    (tap)="removeFavourite(item.city)"></Button>
+            <StackLayout row="0" col="2">
+                <Button class="btn icon" [text]="getIcon('0xe872')" (tap)="removeFavourite(item.city)"></Button>
             </StackLayout>
         </GridLayout>
     </ng-template>

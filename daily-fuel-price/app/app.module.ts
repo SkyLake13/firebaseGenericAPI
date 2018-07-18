@@ -4,7 +4,8 @@ import { AppRouting, COMPONENTS } from "./app.routing";
 import { AppComponent } from "./app.component";
 
 import { NativeScriptRouterModule } from "nativescript-angular/router";
-import { CoreModule, BusyIndicatorService, AppErrorHandler, ErrorHandlerService, AppSettings, ToastMessageService } from "~/core";
+import { CoreModule, BusyIndicatorService, AppErrorHandler, 
+    ErrorHandlerService, AppSettings, ToastMessageService } from "~/core";
 import { HelperService } from "~/core/helper.service";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -31,7 +32,7 @@ import { HelperService } from "~/core/helper.service";
         HelperService
     ],
     schemas: [
-        NO_ERRORS_SCHEMA
+        
     ],
     bootstrap: [
         AppComponent
