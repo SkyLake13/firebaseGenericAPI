@@ -32,7 +32,7 @@ import { HelperService } from "~/core/helper.service";
         HelperService
     ],
     schemas: [
-        
+        NO_ERRORS_SCHEMA
     ],
     bootstrap: [
         AppComponent
