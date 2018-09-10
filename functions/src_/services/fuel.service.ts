@@ -15,6 +15,32 @@ export default class FuelService {
         return fuels;
     }
 
+    public async getByCities(cities: Array<string>): Promise<Array<Fuel>> {
+        const fuels = await this.get();
+        const filtered = fuels.filter((f: Fuel) => cities.some(x => x === f.name.toLowerCase()))
+        return filtered;
+    }
+
+    public async getCities(): Promise<Array<string>> {
+        const response = await got(this.url);
+        const cities = FuelService.adaptCities(response.body);
+        
+        return cities;
+    }
+
+    public static adaptCities(html: string): Array<string> {
+        const cities = [];
+
+        const $ = cheerio.load(html);
+        $('#mainDiv').each((index, element) => {
+            const ele = $(element);
+            const city = ele.children('.W70').children().first().text();
+            cities.push(city);
+        });
+
+        return cities;
+    }
+
     public static adapt(html: string): Array<Fuel> {
         const fuels: Array<Fuel> = [];
 
