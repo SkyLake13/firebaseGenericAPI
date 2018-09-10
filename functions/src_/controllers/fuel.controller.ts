@@ -2,60 +2,39 @@ import { Router, Request, Response } from 'express';
 import * as request from 'request';
 import * as cheerio from 'cheerio';
 import { BaseController } from './base.controller';
+import FuelService from '../services/fuel.service';
 
-class FuelController extends BaseController {
+export default class FuelController extends BaseController {
     
-    constructor() {
+    constructor(private fuelService: FuelService) {
         super('Fuel controller');
         this.setUp();
     }
 
-    private setUp() {
-        this.router.get('/', this.get);
-        this.router.get('/cities', this.getCities);
-        this.router.get('/:names', this.getByCityNames);
+    protected setUp() {
+        this.router.get('/', this.get.bind(this));
+        this.router.get('/cities', this.getCities.bind(this));
+        this.router.get('/:names', this.getByCityNames.bind(this));
     }
 
-    private get(req: Request, res: Response) {
-        let url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
-        
-        let jsons = [];
-        let json = { city : "", price : "", change : "", date: ""};
+    private async get(req: Request, res: Response) {
+        const fuels = await this.fuelService.get();
 
-        request(url, (error, response, html) => {
-            console.log("error", error);
-            if(!error) {    
-                    let $ = cheerio.load(html);
-                    $('#mainDiv').each((index, element) => {
-                        json =  { city : "", price : "", change : "", date: ""};
-                        let ele = $(element);
-                        let name = ele.children('.W70').children().first().text();
-                        let price = ele.children('.W60').children('b').text();
-                        let change = ele.children('.W60').children('span').text();
-                        let date = ele.children('.W40').children('div').text().replace('\\n', '').trim();
-                        json.city = name;
-                        json.price = price;
-                        json.change = change;
-                        json.date = date;
-                        jsons.push(json);
-                    });
-                }
-            res.send(jsons);
-        });
+        res.send(fuels);
     }
 
     private getCities(req: Request, res: Response) {
-        let url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
+        const url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
         
-        let cities = [];
+        const cities = [];
 
         request(url, (error, response, html) => {
             console.log("error", error);
             if(!error) {    
-                    let $ = cheerio.load(html);
+                    const $ = cheerio.load(html);
                     $('#mainDiv').each((index, element) => {
-                        let ele = $(element);
-                        let city = ele.children('.W70').children().first().text();
+                        const ele = $(element);
+                        const city = ele.children('.W70').children().first().text();
                         cities.push(city);
                     });
                 }
@@ -64,26 +43,26 @@ class FuelController extends BaseController {
     }
 
     private getByCityNames(req: Request, res: Response) {
-        let url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
-        let _cityNames = req.params.names.toLowerCase();
-        let cityNames: Array<string> = _cityNames.split(',');
+        const url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
+        const _cityNames = req.params.names.toLowerCase();
+        const cityNames: Array<string> = _cityNames.split(',');
         
-        let jsons = [];
+        const jsons = [];
         let json = { city : "", price : "", change : "", date: ""};
 
         request(url, (error, response, html) => {
             console.log("error", error);
             if(!error) {    
-                    let $ = cheerio.load(html);
+                    const $ = cheerio.load(html);
                     $('#mainDiv').each((index, element) => {
                         json =  { city : "", price : "", change : "", date: ""};
-                        let ele = $(element);
-                        let name = ele.children('.W70').children().first().text();
+                        const ele = $(element);
+                        const name = ele.children('.W70').children().first().text();
 
                         if(cityNames.find(c => c === name.toLowerCase())) {
-                            let price = ele.children('.W60').children('b').text();
-                            let change = ele.children('.W60').children('span').text();
-                            let date = ele.children('.W40').children('div').text().replace('\\n', '').trim();
+                            const price = ele.children('.W60').children('b').text();
+                            const change = ele.children('.W60').children('span').text();
+                            const date = ele.children('.W40').children('div').text().replace('\\n', '').trim();
                             json.city = name;
                             json.price = price;
                             json.change = change;
@@ -97,4 +76,4 @@ class FuelController extends BaseController {
     }
 }
 
-export default new FuelController().router;
+// export default new FuelController().router;

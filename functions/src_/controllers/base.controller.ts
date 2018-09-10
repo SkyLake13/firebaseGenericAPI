@@ -2,15 +2,17 @@ import { Router, Request, Response } from 'express';
 
 export class BaseController {
     protected controllerName: string;
-    public router: Router = Router();
+    public router: Router;
 
     constructor(controllerName: string) {
         this.controllerName = controllerName;
-        // this._setUp();
+        this.router = Router();
+        this.setUp();
     }
 
-    private _setUp() {
-        this.router.get('/', this.listening);
+    protected setUp() {
+        this.router.get('/help/help', this.listening.bind(this));
+        console.log('base setup is called.', this.controllerName);
     }
 
     private listening(req: Request, res: Response) {

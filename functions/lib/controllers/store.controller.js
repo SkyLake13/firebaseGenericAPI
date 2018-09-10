@@ -1,77 +1,67 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
 const base_controller_1 = require("./base.controller");
-function instantiateDbObject() {
-    const firebase = functions.config().firebase;
-    admin.initializeApp(firebase);
-    return admin.firestore();
-}
 class StoreController extends base_controller_1.BaseController {
-    constructor() {
+    constructor(storeService) {
         super('Store controller');
+        this.storeService = storeService;
         this.setUp();
     }
     setUp() {
-        this.router.get('/:type', this.getAllByType);
-        this.router.get('/:type/:id', this.getByTypeId);
-        this.router.post('/:type', this.post);
-        this.router.put('/:type/:id', this.put);
-        this.router.delete('/:type/:id', this.delete);
+        this.router.get('/:type', this.getAllByType.bind(this));
+        this.router.get('/:type/:id', this.getByTypeId.bind(this));
+        this.router.post('/:type', this.post.bind(this));
+        this.router.put('/:type/:id', this.put.bind(this));
+        this.router.delete('/:type/:id', this.delete.bind(this));
     }
     getAllByType(req, res) {
-        let db = instantiateDbObject();
-        let type = req.params.type;
-        db.collection(type).get().then((d) => {
-            let xyz = [];
-            d.forEach(a => {
-                let b = a.data();
-                b.Id = a.id;
-                b.CreateTime = a.createTime;
-                b.UpdateTime = a.updateTime;
-                xyz.push(b);
-            });
-            res.send(xyz);
-        }).catch(err => res.status(500).send(err));
+        return __awaiter(this, void 0, void 0, function* () {
+            const type = req.params.type;
+            const items = yield this.storeService.get(type);
+            res.send(items);
+        });
     }
     getByTypeId(req, res) {
-        let db = instantiateDbObject();
-        let type = req.params.type;
-        let id = req.params.id;
-        db.collection(type).doc(id).get().then((d) => {
-            let x = d.data();
-            x.Id = d.id;
-            x.CreateTime = d.createTime;
-            x.UpdateTime = d.updateTime;
-            res.send(x);
-        }).catch(err => res.status(500).send(err));
+        return __awaiter(this, void 0, void 0, function* () {
+            const type = req.params.type;
+            const id = req.params.id;
+            const item = yield this.storeService.getById(type, id);
+            res.send(item);
+        });
     }
     post(req, res) {
-        let db = instantiateDbObject();
-        let type = req.params.type;
-        let data = req.body;
-        db.collection(type).add(data).then((d) => {
-            res.send('data with id ' + d.id + ' is created in data collection.');
-        }).catch(err => res.status(500).send(err));
+        return __awaiter(this, void 0, void 0, function* () {
+            const type = req.params.type;
+            const data = req.body;
+            const id = yield this.storeService.add(type, data);
+            res.send(id);
+        });
     }
     put(req, res) {
-        let db = instantiateDbObject();
-        let id = req.params.id;
-        let type = req.params.type;
-        let data = req.body;
-        db.collection(type).doc(id).update(data).then((d) => {
-            res.send(d.writeTime);
-        }).catch(err => res.status(500).send(err));
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            const type = req.params.type;
+            const data = req.body;
+            const writeTime = yield this.storeService.update(type, id, data);
+            res.send(writeTime);
+        });
     }
     delete(req, res) {
-        let db = instantiateDbObject();
-        let type = req.params.type;
-        let id = req.params.id;
-        db.collection(type).doc(id).delete().then(d => {
-            res.send(d.writeTime);
-        }).catch(err => res.status(400).send(err));
+        return __awaiter(this, void 0, void 0, function* () {
+            const type = req.params.type;
+            const id = req.params.id;
+            const writeTime = yield this.storeService.delete(type, id);
+            res.send(writeTime);
+        });
     }
 }
-exports.default = new StoreController().router;
+exports.default = StoreController;
 //# sourceMappingURL=store.controller.js.map

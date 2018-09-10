@@ -3,12 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 class BaseController {
     constructor(controllerName) {
-        this.router = express_1.Router();
         this.controllerName = controllerName;
-        // this._setUp();
+        this.router = express_1.Router();
+        this.setUp();
     }
-    _setUp() {
-        this.router.get('/', this.listening);
+    setUp() {
+        this.router.get('/help/help', this.listening.bind(this));
+        console.log('base setup is called.', this.controllerName);
     }
     listening(req, res) {
         res.send(this ? this.controllerName : 'Base controller' + ' is listening.');

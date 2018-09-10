@@ -1,28 +1,42 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as cors from 'cors';
-import * as FuelController from './controllers/fuel.controller'
-import * as StoreController from "./controllers/store.controller";
+import FuelController from './controllers/fuel.controller'
+import StoreController from "./controllers/store.controller";
 import { authorization } from "./auth";
+import StoreService from "./services/store.service";
+import FuelService from "./services/fuel.service";
 
 class App {
-    public app: express.Application;
+    public express: express.Application;
+    private storeService: StoreService;
+    private fuelService: FuelService;
 
     constructor() {
-        this.app = express();
-        this.config();
+        this.express = express();
+        this.middleWares();
+        this.serviceFactory();
+        this.routes();
     }
 
-    private config(): void{
-        //this.app.use(authorization);
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+    private middleWares(): void {
+        //this.express.use(authorization);
+        this.express.use(bodyParser.json());
+        this.express.use(bodyParser.urlencoded({ extended: false }));
         // serving static files 
-        this.app.use(express.static('public'));
-        this.app.use(cors({ origin: true }));
-        this.app.use('/fuel', FuelController.default);
-        this.app.use('/store', StoreController.default);
+        this.express.use(express.static('public'));
+        this.express.use(cors({ origin: true }));   
+    }
+
+    private routes(): void {
+        this.express.use('/fuel', new FuelController(this.fuelService).router);
+        this.express.use('/store', new StoreController(this.storeService).router);
+    }
+
+    private serviceFactory() {
+        this.storeService = new StoreService();
+        this.fuelService = new FuelService();
     }
 }
 
-export const app = new App().app;
+export const app = new App().express;
