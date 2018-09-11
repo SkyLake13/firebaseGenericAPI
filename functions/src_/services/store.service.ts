@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import Item from '../models/base.model';
+import Query from '../models/query.model';
 
 export default class StoreService {
     public database: FirebaseFirestore.Firestore;
@@ -18,6 +19,20 @@ export default class StoreService {
         const items: Array<Item> = [];
 
         const result: FirebaseFirestore.QuerySnapshot = await this.database.collection(type).get();
+        
+        result.forEach(res => {
+            const item = new Item(res.id, res.createTime, res.updateTime, res.data());
+            items.push(item);
+        });
+
+        return items;
+    }
+
+    public async query(type: string, query: Query): Promise<Array<Item>> {
+        const items: Array<Item> = [];
+
+        const result: FirebaseFirestore.QuerySnapshot = await this.database.collection(type)
+                    .where(query.fieldPath, query.operation, query.value).get();
         
         result.forEach(res => {
             const item = new Item(res.id, res.createTime, res.updateTime, res.data());
@@ -55,5 +70,10 @@ export default class StoreService {
                     .doc(id).delete();
 
         return res.writeTime;
+    }
+
+    public static dateFormatter(date: string): string {
+        const d = new Date(date);
+        return `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
     }
 }

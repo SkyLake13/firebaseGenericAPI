@@ -35,7 +35,7 @@ class App {
 
     private serviceFactory() {
         this.storeService = new StoreService();
-        this.fuelService = new FuelService();
+        this.fuelService = new FuelService(this.storeService);
     }
 }
 
