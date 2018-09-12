@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const fuel_controller_1 = require("./controllers/fuel.controller");
 const store_controller_1 = require("./controllers/store.controller");
+// import { authorization } from "./auth";
 const store_service_1 = require("./services/store.service");
 const fuel_service_1 = require("./services/fuel.service");
 class App {
@@ -28,7 +29,7 @@ class App {
     }
     serviceFactory() {
         this.storeService = new store_service_1.default();
-        this.fuelService = new fuel_service_1.default();
+        this.fuelService = new fuel_service_1.default(this.storeService);
     }
 }
 exports.app = new App().express;

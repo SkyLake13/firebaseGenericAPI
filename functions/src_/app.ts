@@ -3,7 +3,7 @@ import * as bodyParser from "body-parser";
 import * as cors from 'cors';
 import FuelController from './controllers/fuel.controller'
 import StoreController from "./controllers/store.controller";
-import { authorization } from "./auth";
+// import { authorization } from "./auth";
 import StoreService from "./services/store.service";
 import FuelService from "./services/fuel.service";
 

@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
-import * as got from 'got';
+import axios from 'axios';
 import Fuel from '../models/fuel.model';
 import StoreService from './store.service';
 import Query from '../models/query.model';
-import Item from '../models/base.model';
+// import Item from '../models/base.model';
 
 export default class FuelService {
     private readonly url: string = 'https://www.mypetrolprice.com/petrol-price-in-india.aspx';
@@ -23,9 +23,9 @@ export default class FuelService {
     public async get(): Promise<Array<Fuel>> {
         const f = await this.todaysFuel();
         if(f.length === 0) {
-            const response = await got(this.url);
-            const fuels = FuelService.adapt(response.body);
-            this.storeFuelData(fuels);
+            const response = await axios.get(this.url);
+            const fuels = FuelService.adapt(response.data);
+            await this.storeFuelData(fuels);
             console.log('web scrapping done.');
             return fuels;
         }
@@ -39,8 +39,8 @@ export default class FuelService {
     }
 
     public async getCities(): Promise<Array<string>> {
-        const response = await got(this.url);
-        const cities = FuelService.adaptCities(response.body);
+        const response = await axios.get(this.url);
+        const cities = FuelService.adaptCities(response.data);
         
         return cities;
     }
